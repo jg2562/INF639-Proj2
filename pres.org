@@ -1,0 +1,86 @@
+#+TITLE: Password Manager with Blockchain
+#+AUTHOR: Jack Garrard
+#+OPTIONS:   H:2 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:nil mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+OPTIONS: H:2
+#+BEAMER_HEADER: \AtBeginSection{\frame{\sectionpage}}
+#+BEAMER_THEME: AnnArbor
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_FRAME_LEVEL: 2
+
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+* Blockchain
+** Review
+- Block of data
+- Hashed with hash of previous block
+- Repeat to create secure chain
+** Diagram
+#+begin_src plantuml :file ./bc_diag.png
+  @startuml
+  [*] --> Message1
+  Message1 --> Message2 : 12345aef
+  Message1 : Data - This is my first message
+  Message1 : Hash - 11111eff
+
+  Message2 : Data - Heres my second!
+  Message2 : Hash - 12345aef
+  @enduml
+#+end_src
+
+#+attr_latex: :width 75
+#+RESULTS:
+[[file:./bc_diag.png]]
+
+* Protocol
+** Login
+- Upon login attempt record username and attempt validity
+- Add previous hash
+- Hash everything together
+- Return to user validity, previous hash, current hash
+** Diagram
+#+begin_src plantuml :file ./bc_proto.png
+@startuml
+[*] --> Attempt1
+Attempt1 --> Attempt2 : bcde4321
+Attempt1 : User - Jack
+Attempt1 : Valid - Successful
+Attempt1 : Hash - 3ead1ebf
+
+Attempt2 : User - Billy
+Attempt2 : Valid - Failed
+Attempt2 : Hash - bcde4321
+@enduml
+#+end_src
+
+#+attr_latex: :width 75
+#+RESULTS:
+[[file:./bc_proto.png]]
+** Demo!
+Lets do a quick demo!
+* Applications
+** Businesses
+- Login records
+- Public trust
+- Security logs
+
+** Government
+- Paperwork
+- Extra login security (potentially small scale voting)
+ 
+** Public trust
+- Release blockchain publicly
+- If public has doubts, they can recreate blockchain
+- Can also verify their block is correct
+- Less he said, she said problems
+  
+* Questions?
