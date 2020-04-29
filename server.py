@@ -15,8 +15,23 @@ PORT = 8888
 FILE = "/tmp/inf-test"
 key_size = 128
 bind_arg = FILE
-blockchain = [0]
+blockchain = []
 # Bind_arg = ((host,port))
+
+
+def loadBlockchain(file):
+    try:
+        with open(file, "r") as fh:
+            chain = [line.strip() for line in fh.readlines()]
+        return chain
+    except OSError:
+        return ["0"]
+
+
+def saveBlockchain(file, chain):
+    chain = [line + "\n" for line in chain]
+    with open(file, "w") as fh:
+        fh.writelines(chain)
 
 
 def createSocket(sock_type, bind_args):
@@ -106,6 +121,7 @@ def lookupPufHashes(hash_data):
 def exitServer(s):
     # s.shutdown(socket.SHUT_RDWR)
     s.close()
+    os.remove(FILE)
 
 
 def challengePuf(filename, loc):
@@ -160,6 +176,7 @@ def createUser(database, credentials):
 
 
 if __name__ == "__main__":
+    blockchain = loadBlockchain("blockchain.txt")
     database = Database()
     s = createSocket(socket.AF_UNIX, bind_arg)
     print("Connected to server")
@@ -169,6 +186,7 @@ if __name__ == "__main__":
 
     finally:
         exitServer(s)
+        s = None
         database.commit()
         database.close()
-        s = None
+        saveBlockchain("blockchain.txt", blockchain)
